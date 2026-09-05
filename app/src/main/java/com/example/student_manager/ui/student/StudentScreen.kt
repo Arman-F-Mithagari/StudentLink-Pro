@@ -29,9 +29,14 @@ fun StudentScreen(
     viewModel: StudentViewModel,
     onBackClick: () -> Unit
 ) {
+    var id by remember { mutableStateOf("") }
+    var rollNumber by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
     var course by remember { mutableStateOf("") }
+    var semester by remember { mutableStateOf("") }
+    var division by remember { mutableStateOf("") }
     var loading by remember { mutableStateOf(false) }
     var message by remember { mutableStateOf("") }
 
@@ -56,6 +61,24 @@ fun StudentScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 OutlinedTextField(
+                    value = id,
+                    onValueChange = { id = it },
+                    label = { Text("Id") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                OutlinedTextField(
+                    value = rollNumber,
+                    onValueChange = { rollNumber = it },
+                    label = { Text("Roll Number") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
                     label = { Text("Name") },
@@ -74,6 +97,15 @@ fun StudentScreen(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 OutlinedTextField(
+                    value = phoneNumber,
+                    onValueChange = { phoneNumber = it },
+                    label = { Text("Phone Number") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                OutlinedTextField(
                     value = course,
                     onValueChange = { course = it },
                     label = { Text("Course") },
@@ -82,22 +114,49 @@ fun StudentScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
+                OutlinedTextField(
+                    value = semester,
+                    onValueChange = { semester = it },
+                    label = { Text("Semester") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                OutlinedTextField(
+                    value = division,
+                    onValueChange = { division = it },
+                    label = { Text("Division") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
                 Button(
                     onClick = {
                         if (name.isNotBlank() && email.isNotBlank() && course.isNotBlank()) {
                             loading = true
                             val student = Student(
-                                id = 0,
+//                                id = id,
+                                rollNumber = rollNumber,
                                 name = name,
                                 email = email,
-                                course = course
+                                phoneNumber = phoneNumber,
+                                course = course,
+                                semester = semester.toInt(),
+                                division = division
                             )
                             viewModel.addStudent(student)
                             loading = false
                             message = "Student added successfully!"
+                            id = ""
+                            rollNumber = ""
                             name = ""
                             email = ""
+                            phoneNumber = ""
                             course = ""
+                            semester = ""
+                            division = ""
                         } else {
                             message = "Please fill all fields"
                         }

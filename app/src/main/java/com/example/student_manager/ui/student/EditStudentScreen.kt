@@ -40,9 +40,14 @@ fun EditStudentScreen(
     student: Student,
     onBackClick: () -> Unit
 ) {
+//    var id by remember { mutableStateOf(student.id) }
+    var rollNumber by remember { mutableStateOf(student.rollNumber ?: "") }
     var name by remember { mutableStateOf(student.name) }
     var email by remember { mutableStateOf(student.email) }
+    var phoneNumber by remember { mutableStateOf(student.phoneNumber ?: "") }
     var course by remember { mutableStateOf(student.course) }
+    var semester by remember { mutableStateOf(student.semester.toString()) }
+    var division by remember { mutableStateOf(student.division ?: "") }
     var localMessage by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
 
@@ -71,6 +76,22 @@ fun EditStudentScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+//            OutlinedTextField(
+//                value = id,
+//                onValueChange = { id = it },
+//                label = { Text("Student id") },
+//                modifier = Modifier.fillMaxWidth()
+//            )
+//            Spacer(modifier = Modifier.height(12.dp))
+
+            OutlinedTextField(
+                value = rollNumber,
+                onValueChange = { rollNumber = it },
+                label = { Text("Student Roll Number") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
@@ -91,6 +112,14 @@ fun EditStudentScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             OutlinedTextField(
+                value = phoneNumber,
+                onValueChange = { phoneNumber = it },
+                label = { Text("Student Phone Number") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+
+            OutlinedTextField(
                 value = course,
                 onValueChange = { course = it },
                 label = { Text("Course") },
@@ -99,25 +128,55 @@ fun EditStudentScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
+            OutlinedTextField(
+                value = semester,
+                onValueChange = { semester = it },
+                label = { Text("Student's Current Semester") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+
+            OutlinedTextField(
+                value = division,
+                onValueChange = { division = it },
+                label = { Text("Student Division") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+
             Button(
                 onClick = {
-                    if (name.isNotBlank() && email.isNotBlank() && course.isNotBlank()) {
-                        val id = student.id
-                        if (id != null) {
+                    if (
+                        rollNumber.isNotBlank() &&
+                        name.isNotBlank() &&
+                        email.isNotBlank() &&
+                        phoneNumber.isNotBlank() &&
+                        course.isNotBlank() &&
+                        semester.isNotBlank() &&
+                        division.isNotBlank()
+                        ) {
+
+                        student.id?.let { studentId ->
+
                             isLoading = true
                             localMessage = ""
 
                             viewModel.updateStudent(
-                                id,
+                               studentId,
                                 Student(
-                                    id = id,
-                                    name = name,
-                                    email = email,
-                                    course = course
+                                    id = studentId,
+                                    rollNumber = rollNumber.trim(),
+                                    name = name.trim(),
+                                    email = email.trim(),
+                                    phoneNumber = phoneNumber.trim(),
+                                    course = course.trim(),
+                                    semester = semester.toInt(),
+                                    division = division.trim()
                                 )
                             )
-                        } else {
-                            localMessage = "Invalid student ID"
+
+                        } ?: run {
+                            localMessage = "Invalid Student ID"
                         }
                     } else {
                         localMessage = "Please fill all fields"

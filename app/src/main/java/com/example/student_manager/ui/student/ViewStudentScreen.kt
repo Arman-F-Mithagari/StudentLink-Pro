@@ -106,12 +106,17 @@ fun StudentItem(
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
+            Text(text = "ID: ${student.id}")
+            Text(text = "Roll Number: ${student.rollNumber}")
             Text(
                 text = "Name: ${student.name}",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(text = "Email: ${student.email}")
+            Text(text = "Phone Number: ${student.phoneNumber}")
             Text(text = "Course: ${student.course}")
+            Text(text = "Semester: ${student.semester}")
+            Text(text = "Division: ${student.division}")
 
             Spacer(modifier = Modifier.height(12.dp))
 

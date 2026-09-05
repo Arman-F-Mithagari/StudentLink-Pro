@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+//import com.example.student_manager.ui.components.AppScaffold
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +16,7 @@ import androidx.compose.ui.modifier.modifierLocalOf
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.student_manager.data.Student
 import com.example.student_manager.ui.student.AddStudentScreen
+import com.example.student_manager.ui.student.AppScaffold
 import com.example.student_manager.ui.student.DashboardScreen
 import com.example.student_manager.ui.student.EditStudentScreen
 import com.example.student_manager.ui.student.LoginScreen
@@ -48,25 +50,46 @@ class MainActivity : ComponentActivity() {
                     }
 
                     "dashboard" -> {
-                        DashboardScreen(
-                            onNewStudentClick = {
-                                currentScreen = "add"
-                            },
-                            onViewStudentsClick = {
-                                studentViewModel.getStudents()
-                                currentScreen = "view"
-                            }
-                        )
+                        AppScaffold(
+                            currentScreen = currentScreen,
+                            onNavigate = { currentScreen = it }
+                        ) {
+                            DashboardScreen(
+                                viewModel = studentViewModel,
+                                onNewStudentClick = {
+                                    currentScreen = "add"
+                                },
+                                onViewStudentsClick = {
+                                    studentViewModel.getStudents()
+                                    currentScreen = "view"
+                                }
+                            )
+                        }
                     }
 
                     "add" -> {
-                        AddStudentScreen(
-                            viewModel = studentViewModel,
-                            onBackClick = {
-                                currentScreen = "dashboard"
+                        AppScaffold(
+                            currentScreen = "add",
+                            onNavigate = { screen ->
+                                currentScreen = screen
                             }
-                        )
+                        ) {
+                            AddStudentScreen(
+                                viewModel = studentViewModel,
+                                onBackClick = {
+                                    currentScreen = "dashboard"
+                                }
+                            )
+                        }
                     }
+//                    {
+//                        AddStudentScreen(
+//                            viewModel = studentViewModel,
+//                            onBackClick = {
+//                                currentScreen = "dashboard"
+//                            }
+//                        )
+//                    }
 
                     "view" -> {
                         ViewStudentScreen(

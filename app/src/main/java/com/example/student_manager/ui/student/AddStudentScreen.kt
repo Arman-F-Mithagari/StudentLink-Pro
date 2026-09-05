@@ -11,7 +11,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Observer
 import com.example.student_manager.data.Student
 import com.example.student_manager.viewmodel.StudentViewModel
 
@@ -21,9 +20,14 @@ fun AddStudentScreen(
     viewModel: StudentViewModel,
     onBackClick: () -> Unit
 ) {
+    var id by remember { mutableStateOf("") }
+    var rollNumber by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
     var course by remember { mutableStateOf("") }
+    var semester by remember { mutableStateOf("") }
+    var division by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
 
     val message by viewModel.message.observeAsState("")
@@ -38,9 +42,14 @@ fun AddStudentScreen(
 
         LaunchedEffect(message) {
             if (message.contains("successfully", ignoreCase = true)) {
+                id = ""
+                rollNumber = ""
                 name = ""
                 email = ""
+                phoneNumber = ""
                 course = ""
+                semester = ""
+                division = ""
                 isLoading = false
             } else if (message.isNotEmpty()) {
                 isLoading = false
@@ -56,6 +65,23 @@ fun AddStudentScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            OutlinedTextField(
+                value = id,
+                onValueChange = { id = it },
+                label = { Text("Student id") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            OutlinedTextField(
+                value = rollNumber,
+                onValueChange = { rollNumber = it },
+                label = { Text("Student Roll Number") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             OutlinedTextField(
                 value = name,
@@ -77,6 +103,15 @@ fun AddStudentScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             OutlinedTextField(
+                value = phoneNumber,
+                onValueChange = { phoneNumber = it },
+                label = { Text("Student Phone Number") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            OutlinedTextField(
                 value = course,
                 onValueChange = { course = it },
                 label = { Text("Course") },
@@ -85,15 +120,38 @@ fun AddStudentScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
+            OutlinedTextField(
+                value = semester,
+                onValueChange = { semester = it },
+                label = { Text("Student's Current Semester") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            OutlinedTextField(
+                value = division,
+                onValueChange = { division = it },
+                label = { Text("Student Division") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
             Button(
                 onClick = {
                     if (name.isNotBlank() && email.isNotBlank() && course.isNotBlank()) {
                         isLoading = true
 
                         val student = Student(
+                            id = id.toLong(),
+                            rollNumber = rollNumber.trim(),
                             name = name.trim(),
                             email = email.trim(),
-                            course = course.trim()
+                            phoneNumber = phoneNumber.trim(),
+                            course = course.trim(),
+                            semester = semester.toInt(),
+                            division = division.trim()
                         )
 
                         viewModel.addStudent(student)
