@@ -11,6 +11,9 @@ class StudentViewModel : ViewModel() {
 
     val studentList = MutableLiveData<List<Student>>(emptyList())
     val message = MutableLiveData<String>()
+    val addMessage = MutableLiveData<String>()
+    val updateMessage = MutableLiveData<String>()
+    val deleteMessage = MutableLiveData<String>()
 
     fun getStudents() {
         viewModelScope.launch {
@@ -27,10 +30,10 @@ class StudentViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = RetrofitInstance.api.addStudent(student)
-                message.value = "Student added successfully: ${response.name}"
+                addMessage.value = "Student added successfully: ${response.name}"
                 getStudents()
             } catch (e: Exception) {
-                message.value = "Failed to add student: ${e.message}"
+                addMessage.value = "Failed to add student: ${e.message}"
             }
         }
     }
@@ -50,11 +53,17 @@ class StudentViewModel : ViewModel() {
     fun deleteStudent(id: Long) {
         viewModelScope.launch {
             try {
-                RetrofitInstance.api.deleteStudent(id)
-                message.value = "Student deleted successfully"
-                getStudents()
+                val response = RetrofitInstance.api.deleteStudent(id)
+
+                if (response.isSuccessful) {
+                    deleteMessage.value = "Student deleted successfully"
+                    getStudents()
+                } else {
+                    deleteMessage.value = "Failed to delete student"
+                }
+
             } catch (e: Exception) {
-                message.value = "Failed to delete student: ${e.message}"
+                deleteMessage.value = "Failed to delete student: ${e.message}"
             }
         }
     }

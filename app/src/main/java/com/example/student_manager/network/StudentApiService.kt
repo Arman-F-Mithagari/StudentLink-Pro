@@ -25,5 +25,5 @@ interface StudentApiService {
     @DELETE("students/{id}")
     suspend fun deleteStudent(
         @Path("id") id: Long
-    ): String
+    ): retrofit2.Response<Unit>
 }

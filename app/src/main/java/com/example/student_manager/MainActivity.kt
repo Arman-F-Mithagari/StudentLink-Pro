@@ -92,29 +92,44 @@ class MainActivity : ComponentActivity() {
 //                    }
 
                     "view" -> {
-                        ViewStudentScreen(
-                            viewModel = studentViewModel,
-                            onEditStudent = { student ->
-                                selectedStudent = student
-                                currentScreen = "edit"
-                            },
-                            onBackClick = {
-                                currentScreen = "dashboard"
+                        AppScaffold(
+                            currentScreen = "view",
+                            onNavigate = {
+                                screen -> currentScreen = screen
                             }
-                        )
-                    }
-
-                    "edit" -> {
-                        selectedStudent?.let { student ->
-                            EditStudentScreen(
+                        ) {
+                            ViewStudentScreen(
                                 viewModel = studentViewModel,
-                                student = student,
+                                onEditStudent = { student ->
+                                    selectedStudent = student
+                                    currentScreen = "edit"
+                                },
                                 onBackClick = {
-                                    studentViewModel.getStudents()
-                                    currentScreen = "view"
+                                    currentScreen = "dashboard"
                                 }
                             )
                         }
+                    }
+
+                    "edit" -> {
+                        AppScaffold(
+                            currentScreen = "edit",
+                            onNavigate = {
+                                screen -> currentScreen = screen
+                            }
+                        ) {
+                            selectedStudent?.let { student ->
+                                EditStudentScreen(
+                                    viewModel = studentViewModel,
+                                    student = student,
+                                    onBackClick = {
+                                        studentViewModel.getStudents()
+                                        currentScreen = "view"
+                                    }
+                                )
+                            }
+                        }
+
                     }
                 }
             }
