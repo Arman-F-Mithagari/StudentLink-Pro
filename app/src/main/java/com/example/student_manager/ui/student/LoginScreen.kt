@@ -89,6 +89,9 @@ fun LoginScreen(
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            ),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 8.dp
             )
