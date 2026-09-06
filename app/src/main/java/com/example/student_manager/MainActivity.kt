@@ -21,6 +21,7 @@ import com.example.student_manager.ui.student.DashboardScreen
 import com.example.student_manager.ui.student.EditStudentScreen
 import com.example.student_manager.ui.student.LoginScreen
 import com.example.student_manager.ui.student.ViewStudentScreen
+import com.example.student_manager.ui.student.StudentDetailsScreen
 import com.example.student_manager.ui.theme.Student_ManagerTheme
 import com.example.student_manager.viewmodel.StudentViewModel
 
@@ -39,6 +40,7 @@ class MainActivity : ComponentActivity() {
                 val studentViewModel: StudentViewModel = viewModel()
                 var currentScreen by remember { mutableStateOf("login") }
                 var selectedStudent by remember { mutableStateOf<Student?>(null) }
+//                var selectedStudent by remember { mutableStateOf<Student?>(null) }
 
                 when (currentScreen) {
                     "login" -> {
@@ -100,6 +102,10 @@ class MainActivity : ComponentActivity() {
                         ) {
                             ViewStudentScreen(
                                 viewModel = studentViewModel,
+                                onViewDetails = { student ->
+                                    selectedStudent = student
+                                    currentScreen = "student_details"
+                                },
                                 onEditStudent = { student ->
                                     selectedStudent = student
                                     currentScreen = "edit"
@@ -130,6 +136,21 @@ class MainActivity : ComponentActivity() {
                             }
                         }
 
+                    }
+
+                    "student_details" -> {
+                        selectedStudent?.let { student ->
+                            StudentDetailsScreen(
+                                student = student,
+                                onBackClick = {
+                                    currentScreen = "view"
+                                },
+                                onEditClick = {
+                                    selectedStudent = it
+                                    currentScreen = "edit"
+                                }
+                            )
+                        }
                     }
                 }
             }

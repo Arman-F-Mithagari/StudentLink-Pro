@@ -319,7 +319,7 @@ fun ActionCard(
             )
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Center
 //            modifier = Modifier.fillMaxSize()
 
         ) {

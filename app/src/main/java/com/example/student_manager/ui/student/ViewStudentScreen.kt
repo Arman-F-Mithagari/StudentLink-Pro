@@ -2,6 +2,7 @@ package com.example.student_manager.ui.student
 
 //import android.graphics.drawable.Icon
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -56,8 +57,8 @@ import com.example.student_manager.viewmodel.StudentViewModel
 @Composable
 fun ViewStudentScreen(
     viewModel: StudentViewModel,
+    onViewDetails: (Student) -> Unit,
     onEditStudent: (Student) -> Unit,
-//    icon: ImageVector,
     onBackClick: () -> Unit
 ) {
     val students by viewModel.studentList.observeAsState(emptyList())
@@ -150,6 +151,9 @@ fun ViewStudentScreen(
                                 student.id?.let { id ->
                                     viewModel.deleteStudent(id)
                                 }
+                            },
+                            onViewDetails = {
+                                selectedStudent -> onViewDetails(selectedStudent)
                             }
                         )
                     }
@@ -204,9 +208,15 @@ fun ViewStudentScreen(
 fun StudentItem(
     student: Student,
     onEdit: () -> Unit,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
+    onViewDetails: (Student) -> Unit
 ) {
     Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable{
+                onViewDetails(student)
+            },
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
