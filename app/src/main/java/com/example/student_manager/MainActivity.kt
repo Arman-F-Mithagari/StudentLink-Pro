@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.modifier.modifierLocalOf
+import androidx.activity.compose.BackHandler
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.student_manager.data.Student
 import com.example.student_manager.ui.student.AddStudentScreen
@@ -41,6 +42,24 @@ class MainActivity : ComponentActivity() {
                 var currentScreen by remember { mutableStateOf("login") }
                 var selectedStudent by remember { mutableStateOf<Student?>(null) }
 //                var selectedStudent by remember { mutableStateOf<Student?>(null) }
+                BackHandler (
+                    enabled = currentScreen != "login" && currentScreen != "dashboard"
+                ){
+                    when(currentScreen){
+                        "student_details" -> {
+                            currentScreen = "view"
+                        }
+                        "edit" -> {
+                            currentScreen = "view"
+                        }
+                        "add" -> {
+                            currentScreen = "dashboard"
+                        }
+                        "view" -> {
+                            currentScreen = "dashboard"
+                        }
+                    }
+                }
 
                 when (currentScreen) {
                     "login" -> {
@@ -84,14 +103,6 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     }
-//                    {
-//                        AddStudentScreen(
-//                            viewModel = studentViewModel,
-//                            onBackClick = {
-//                                currentScreen = "dashboard"
-//                            }
-//                        )
-//                    }
 
                     "view" -> {
                         AppScaffold(

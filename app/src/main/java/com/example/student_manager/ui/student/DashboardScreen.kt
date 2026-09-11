@@ -43,7 +43,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,6 +58,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.student_manager.ui.theme.Student_ManagerTheme
 import com.example.student_manager.viewmodel.StudentViewModel
+
 
 @Composable
 fun DashboardScreen(
@@ -84,6 +88,7 @@ fun DashboardScreen(
                 text = "Welcome Admin",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
+                fontSize = 50.sp,
                 color = Color(0xFF0F4C81)
             )
 
@@ -92,7 +97,8 @@ fun DashboardScreen(
             Text(
                 text = "Here is an overview of the institution's performance today.",
                 color = Color.Gray,
-                style = MaterialTheme.typography.bodyMedium
+                fontSize = 20.sp,
+                style = MaterialTheme.typography.bodyLarge
             )
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -172,7 +178,7 @@ fun DashboardScreen(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ){
                 ActionCard(
-                    title = "Add      Student",
+                    title = "Add Student",
                     onClick = onNewStudentClick,
                     icon = Icons.Default.PersonAdd,
                     modifier = Modifier.weight(1f)
