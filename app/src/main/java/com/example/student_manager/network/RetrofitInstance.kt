@@ -9,7 +9,6 @@ object RetrofitInstance{
 
     private const val BASE_URL = "http://10.0.2.2:8080/api/"
 
-
     private val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
@@ -25,5 +24,14 @@ object RetrofitInstance{
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(StudentApiService::class.java)
+    }
+
+    val attendanceApi: AttendanceApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(AttendanceApiService::class.java)
     }
 }

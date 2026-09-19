@@ -15,15 +15,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.modifier.modifierLocalOf
 import androidx.activity.compose.BackHandler
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.student_manager.ui.student.AttendanceScreen
 import com.example.student_manager.data.Student
 import com.example.student_manager.ui.student.AddStudentScreen
 import com.example.student_manager.ui.student.AppScaffold
+import com.example.student_manager.ui.student.AttendanceHistoryScreen
 import com.example.student_manager.ui.student.DashboardScreen
 import com.example.student_manager.ui.student.EditStudentScreen
 import com.example.student_manager.ui.student.LoginScreen
 import com.example.student_manager.ui.student.ViewStudentScreen
 import com.example.student_manager.ui.student.StudentDetailsScreen
 import com.example.student_manager.ui.theme.Student_ManagerTheme
+import com.example.student_manager.viewmodel.AttendanceViewModel
 import com.example.student_manager.viewmodel.StudentViewModel
 
 class MainActivity : ComponentActivity() {
@@ -57,6 +60,12 @@ class MainActivity : ComponentActivity() {
                         }
                         "view" -> {
                             currentScreen = "dashboard"
+                        }
+                        "attendance" -> {
+                            currentScreen = "dashboard"
+                        }
+                        "attendance_history" -> {
+                            currentScreen = "attendance"
                         }
                     }
                 }
@@ -149,6 +158,39 @@ class MainActivity : ComponentActivity() {
 
                     }
 
+                    "attendance" -> {
+                        AppScaffold(
+                            currentScreen= "attendance",
+                            onNavigate = {
+                                screen -> currentScreen = screen
+                            }
+                        ) {
+                            AttendanceScreen(
+                                studentViewModel = studentViewModel,
+                                onNavigate = { screen ->
+                                    currentScreen = screen
+                                }
+                            )
+                        }
+
+                    }
+
+                    "attendance_history" -> {
+                        AppScaffold(
+                            currentScreen = "attendance_history",
+                            onNavigate = { screen ->
+                                currentScreen = screen
+                            }
+                        ) {
+                            AttendanceHistoryScreen(
+                                attendanceViewModel = viewModel(),
+                                onNavigate = { screen ->
+                                    currentScreen = screen
+                                }
+                            )
+                        }
+                    }
+
                     "student_details" -> {
                         selectedStudent?.let { student ->
                             StudentDetailsScreen(
@@ -163,6 +205,8 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     }
+
+
                 }
             }
         }
