@@ -29,12 +29,6 @@ fun BottomNavBar(
             label = { Text("Home") }
         )
 
-//        NavigationBarItem(
-//            selected = currentScreen == "add",
-//            onClick = { onNavigate("add") },
-//            icon = { Icon(Icons.Default.People, null) },
-//            label = { Text("Add") }
-//        )
 
         NavigationBarItem(
             selected = currentScreen == "view",
