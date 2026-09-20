@@ -66,7 +66,6 @@ private const val LowAttendanceThreshold = 75
 
 private const val PreviewRecords = 7
 
-
 @Composable
 fun StudentDetailsScreen(
     student: Student,
@@ -114,7 +113,7 @@ fun StudentDetailsScreen(
         .uppercase()
         .ifEmpty { "?" }
 
-    val isAlumni = student.semester >= 8 // check and update later
+    val isAlumni = student.semester >= 8
 
     Scaffold(containerColor = PageBg) { paddingValues ->
 
@@ -225,7 +224,10 @@ fun StudentDetailsScreen(
                 }
 
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Row(
+                        modifier = Modifier.height(IntrinsicSize.Min),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
                         StatCard(
                             title = "Attendance",
                             value = attendanceValue,
@@ -233,14 +235,18 @@ fun StudentDetailsScreen(
                             accent = Green,
                             caption = attendanceCaption,
                             valueColor = attendanceValueColor,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
                         )
                         StatCard(
                             title = "CGPA",
                             value = "N/A",
                             icon = Icons.Default.BarChart,
                             accent = Purple,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
                         )
                     }
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {

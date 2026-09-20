@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
@@ -38,6 +39,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.student_manager.ui.theme.Blue
 import com.example.student_manager.ui.theme.CardLine
 import com.example.student_manager.ui.theme.DeepBlue
@@ -47,11 +49,15 @@ import com.example.student_manager.ui.theme.Navy
 import com.example.student_manager.ui.theme.Orange
 import com.example.student_manager.ui.theme.PageBg
 import com.example.student_manager.ui.theme.Purple
+import com.example.student_manager.ui.theme.Red
 import com.example.student_manager.ui.theme.Teal
+import com.example.student_manager.viewmodel.AttendanceViewModel
 import com.example.student_manager.viewmodel.StudentViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+
+private const val AvgAttendanceWarning = 75
 
 
 @Composable
@@ -61,13 +67,16 @@ fun DashboardScreen(
     onViewStudentsClick: () -> Unit,
     onReportsClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
-    avgAttendance: String = "--",
-    avgGpa: String = "--"
+    avgAttendance: String? = null,
+    avgGpa: String = "--",
+    attendanceViewModel: AttendanceViewModel = viewModel()
 ) {
     val students by viewModel.studentList.observeAsState(emptyList())
+    val allAttendance by attendanceViewModel.attendanceList.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.getStudents()
+        attendanceViewModel.getAllAttendance()
     }
 
     val activeCourses = students
@@ -75,6 +84,17 @@ fun DashboardScreen(
         .filter { it.isNotBlank() }
         .distinct()
         .size
+
+    val totalRecords = allAttendance.size
+    val presentRecords = allAttendance.count { it.status == "Present" }
+    val avgPercent = if (totalRecords == 0) null else presentRecords * 100 / totalRecords
+
+    val avgAttendanceValue = avgAttendance ?: avgPercent?.let { "$it%" } ?: "--"
+    val avgAttendanceCaption =
+        if (avgAttendance == null && totalRecords > 0) "$totalRecords records" else null
+    val avgAttendanceColor =
+        if (avgAttendance == null && avgPercent != null && avgPercent < AvgAttendanceWarning) Red
+        else Navy
 
     val today = remember {
         SimpleDateFormat("EEEE, dd MMM yyyy", Locale.getDefault()).format(Date())
@@ -119,36 +139,52 @@ fun DashboardScreen(
 
             item {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Row(
+                        modifier = Modifier.height(IntrinsicSize.Min),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
                         StateCard(
                             title = "Total Students",
                             icon = Icons.Default.People,
                             value = students.size.toString(),
                             accent = Blue,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
                         )
                         StateCard(
                             title = "Avg Attendance",
                             icon = Icons.Default.CalendarMonth,
-                            value = avgAttendance,
+                            value = avgAttendanceValue,
                             accent = Green,
-                            modifier = Modifier.weight(1f)
+                            caption = avgAttendanceCaption,
+                            valueColor = avgAttendanceColor,
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
                         )
                     }
-                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Row(
+                        modifier = Modifier.height(IntrinsicSize.Min),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
                         StateCard(
                             title = "Avg GPA",
                             icon = Icons.Default.BarChart,
                             value = avgGpa,
                             accent = Purple,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
                         )
                         StateCard(
                             title = "Active Courses",
                             icon = Icons.Default.Bookmarks,
                             value = activeCourses.toString(),
                             accent = Orange,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
                         )
                     }
                 }
@@ -314,7 +350,9 @@ fun StateCard(
     icon: ImageVector,
     value: String,
     modifier: Modifier = Modifier,
-    accent: Color = Blue
+    accent: Color = Blue,
+    caption: String? = null,
+    valueColor: Color = Navy
 ) {
     val shape = RoundedCornerShape(22.dp)
 
@@ -332,7 +370,7 @@ fun StateCard(
 
         Text(
             text = value,
-            color = Navy,
+            color = valueColor,
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold
         )
@@ -342,6 +380,14 @@ fun StateCard(
             color = Muted,
             fontSize = 14.sp
         )
+
+        if (caption != null) {
+            Text(
+                text = caption,
+                color = Muted,
+                fontSize = 12.sp
+            )
+        }
     }
 }
 
