@@ -23,6 +23,7 @@ import com.example.student_manager.ui.student.AttendanceHistoryScreen
 import com.example.student_manager.ui.student.DashboardScreen
 import com.example.student_manager.ui.student.EditStudentScreen
 import com.example.student_manager.ui.student.LoginScreen
+import com.example.student_manager.ui.student.ReportsScreen
 import com.example.student_manager.ui.student.ViewStudentScreen
 import com.example.student_manager.ui.student.StudentDetailsScreen
 import com.example.student_manager.ui.theme.Student_ManagerTheme
@@ -66,6 +67,9 @@ class MainActivity : ComponentActivity() {
                         }
                         "attendance_history" -> {
                             currentScreen = "attendance"
+                        }
+                        "reports" -> {
+                            currentScreen = "dashboard"
                         }
                     }
                 }
@@ -191,6 +195,16 @@ class MainActivity : ComponentActivity() {
                         }
                     }
 
+                    "reports" -> {
+                        AppScaffold(
+                            currentScreen = "reports",
+                            onNavigate = { screen ->
+                                currentScreen = screen
+                            }
+                        ) {
+                            ReportsScreen()
+                        }
+                    }
                     "student_details" -> {
                         selectedStudent?.let { student ->
                             StudentDetailsScreen(
