@@ -47,11 +47,6 @@ import com.example.student_manager.ui.theme.Red
 import com.example.student_manager.ui.theme.SaveBrush
 import com.example.student_manager.viewmodel.StudentViewModel
 
-// Colors (PageBg, Navy, Muted, Blue, BlueSoft, Line, CardLine, Green, Red, Orange,
-// SaveBrush, AvatarGradients) come from the shared palette.
-
-// ---- Screen --------------------------------------------------------------
-
 @Composable
 fun ViewStudentScreen(
     viewModel: StudentViewModel,
@@ -74,7 +69,6 @@ fun ViewStudentScreen(
                 it.rollNumber.contains(searchText, ignoreCase = true)
     }
 
-    // Delete confirmation
     studentToDelete?.let { student ->
         AlertDialog(
             onDismissRequest = { studentToDelete = null },
@@ -119,7 +113,6 @@ fun ViewStudentScreen(
                 .clipToBounds()
         ) {
 
-            // Soft background shapes
             Box(
                 modifier = Modifier
                     .size(240.dp)
@@ -145,7 +138,6 @@ fun ViewStudentScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Header
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
                         modifier = Modifier
@@ -182,7 +174,6 @@ fun ViewStudentScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Search
                 OutlinedTextField(
                     value = searchText,
                     onValueChange = { searchText = it },
@@ -242,8 +233,6 @@ fun ViewStudentScreen(
     }
 }
 
-// ---- Student card --------------------------------------------------------
-
 @Composable
 fun StudentItem(
     student: Student,
@@ -277,7 +266,6 @@ fun StudentItem(
             .padding(16.dp)
     ) {
 
-        // Avatar + name + email
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(
                 modifier = Modifier
@@ -317,7 +305,6 @@ fun StudentItem(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Course + status
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -331,7 +318,6 @@ fun StudentItem(
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        // Details
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -346,7 +332,6 @@ fun StudentItem(
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        // Actions
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             CardAction(
                 label = "Edit",
@@ -373,8 +358,6 @@ fun StudentItem(
         }
     }
 }
-
-// ---- Pieces --------------------------------------------------------------
 
 @Composable
 private fun CourseChip(course: String, modifier: Modifier = Modifier) {

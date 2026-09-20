@@ -87,7 +87,6 @@ fun DashboardScreen(
             .clipToBounds()
     ) {
 
-        // Soft background shapes
         Box(
             modifier = Modifier
                 .size(240.dp)

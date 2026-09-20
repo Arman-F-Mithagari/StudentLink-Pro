@@ -77,7 +77,6 @@ fun StudentDetailsScreen(
 ) {
     val context = LocalContext.current
 
-    // Load attendance and keep only this student's records.
     val allAttendance by attendanceViewModel.attendanceList.collectAsState()
 
     LaunchedEffect(student.id) {
