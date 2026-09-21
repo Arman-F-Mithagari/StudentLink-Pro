@@ -132,7 +132,7 @@ fun ViewStudentScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues)
+                    .padding(bottom = paddingValues.calculateBottomPadding())
                     .padding(horizontal = 16.dp)
             ) {
 
@@ -142,6 +142,7 @@ fun ViewStudentScreen(
                     Box(
                         modifier = Modifier
                             .size(48.dp)
+//                            .padding(top = 0.dp)
                             .shadow(6.dp, CircleShape)
                             .clip(CircleShape)
                             .background(Color.White)
