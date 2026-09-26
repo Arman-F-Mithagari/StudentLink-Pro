@@ -5,14 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 //import com.example.student_manager.ui.components.AppScaffold
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.modifier.modifierLocalOf
 import androidx.activity.compose.BackHandler
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.student_manager.ui.student.AttendanceScreen
@@ -23,11 +17,10 @@ import com.example.student_manager.ui.student.AttendanceHistoryScreen
 import com.example.student_manager.ui.student.DashboardScreen
 import com.example.student_manager.ui.student.EditStudentScreen
 import com.example.student_manager.ui.student.LoginScreen
-import com.example.student_manager.ui.student.ReportsScreen
+import com.example.student_manager.ui.student.ReportScreen
 import com.example.student_manager.ui.student.ViewStudentScreen
 import com.example.student_manager.ui.student.StudentDetailsScreen
 import com.example.student_manager.ui.theme.Student_ManagerTheme
-import com.example.student_manager.viewmodel.AttendanceViewModel
 import com.example.student_manager.viewmodel.StudentViewModel
 
 class MainActivity : ComponentActivity() {
@@ -68,7 +61,7 @@ class MainActivity : ComponentActivity() {
                         "attendance_history" -> {
                             currentScreen = "attendance"
                         }
-                        "reports" -> {
+                        "report" -> {
                             currentScreen = "dashboard"
                         }
                     }
@@ -196,15 +189,14 @@ class MainActivity : ComponentActivity() {
                     }
 
                     "reports" -> {
-                        AppScaffold(
-                            currentScreen = "reports",
-                            onNavigate = { screen ->
-                                currentScreen = screen
+                        ReportScreen(
+                            viewModel = studentViewModel,
+                            onBackClick = {
+                                currentScreen = "dashboard"
                             }
-                        ) {
-                            ReportsScreen()
-                        }
+                        )
                     }
+
                     "student_details" -> {
                         selectedStudent?.let { student ->
                             StudentDetailsScreen(

@@ -1,5 +1,8 @@
 package com.example.student_manager.network
 
+import com.example.student_manager.data.DailyAttendance
+import com.example.student_manager.data.MonthlyAttendance
+import com.example.student_manager.data.ReportData
 import com.example.student_manager.data.Student
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -21,6 +24,15 @@ interface StudentApiService {
         @Path("id") id: Long,
         @Body student: Student
     ): Student
+
+    @GET("reports/summary")
+    suspend fun getReportSummary(): ReportData
+
+    @GET("reports/monthly")
+    suspend fun getMonthlyAttendance(): List<MonthlyAttendance>
+
+    @GET("reports/daily")
+    suspend fun getDailyAttendance(): List<DailyAttendance>
 
     @DELETE("students/{id}")
     suspend fun deleteStudent(

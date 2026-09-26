@@ -528,7 +528,6 @@ fun AttendanceStudentCard(
     ) {
         Row(modifier = Modifier.height(IntrinsicSize.Min)) {
 
-            // Status stripe
             Box(
                 modifier = Modifier
                     .width(6.dp)

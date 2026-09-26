@@ -453,7 +453,6 @@ private fun SubmitButton(
     onClick: () -> Unit
 ) {
     val shape = RoundedCornerShape(20.dp)
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
