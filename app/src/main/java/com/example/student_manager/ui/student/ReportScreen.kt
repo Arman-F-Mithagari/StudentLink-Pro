@@ -52,6 +52,7 @@ import com.example.student_manager.viewmodel.StudentViewModel
 @Composable
 fun ReportScreen(
     onBackClick: () -> Unit,
+    onNavigate: (String) -> Unit,
     viewModel: StudentViewModel
 ) {
     val context = LocalContext.current
@@ -97,7 +98,8 @@ fun ReportScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(16.dp),
+                .padding(16.dp)
+                .padding(bottom = 90.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
@@ -178,11 +180,30 @@ fun ReportScreen(
                 }
             }
 
-            TrendCard(title = "Monthly Attendance") {
+//            TrendCard(
+//                title = "Monthly Attendance",
+//                onClick = {
+//                    onNavigate("monthly_report")
+//                }
+//            ) {
+//                Text(
+//                    text = monthlyData.lastOrNull()?.let {
+//                        "${it.month} : ${it.count}"
+//                    } ?: "No Data"
+//                )
+//            }
+
+
+            TrendCard(
+                title = "Monthly Attendance",
+                onClick = {
+                    onNavigate("monthly_report")
+                }
+            ) {
                 if (monthlyData.isEmpty()) {
                     EmptyTrend("No monthly data yet.")
                 } else {
-                    monthlyData.forEach { item ->
+                    monthlyData.takeLast(3).forEach { item ->
                         TrendBarRow(
                             label = item.month,
                             value = item.count,
@@ -193,19 +214,37 @@ fun ReportScreen(
                 }
             }
 
-            TrendCard(title = "Daily Attendance") {
-                if (dailyData.isEmpty()) {
-                    EmptyTrend("No daily data yet.")
-                } else {
-                    dailyData.forEach { item ->
-                        TrendBarRow(
-                            label = item.date,
-                            value = item.count,
-                            maxValue = dailyMax,
-                            color = Purple
-                        )
-                    }
+//            TrendCard(
+//                title = "Daily Attendance",
+//                onClick = {
+//                    onNavigate("daily_report")
+//                }
+//            ) {
+//                Text(
+//                    text = dailyData.lastOrNull()?.let {
+//                        "${it.date} : ${it.count}"
+//                    } ?: "No Data"
+//                )
+//            }
+
+            TrendCard(
+                title = "Daily Attendance",
+                onClick = {
+                    onNavigate("daily_report")
                 }
+            ) {
+                    if (dailyData.isEmpty()) {
+                        EmptyTrend("No daily data yet.")
+                    } else {
+                        dailyData.takeLast(3).forEach { item ->
+                            TrendBarRow(
+                                label = item.date,
+                                value = item.count,
+                                maxValue = dailyMax,
+                                color = Purple
+                            )
+                        }
+                    }
             }
 
             Text(
@@ -234,6 +273,8 @@ fun ReportScreen(
         }
     }
 }
+
+//private fun ColumnScope.onNavigate(string: String) {}
 
 @Composable
 private fun OverviewCard(percent: Double) {
@@ -377,6 +418,7 @@ fun ReportCard(
 @Composable
 private fun TrendCard(
     title: String,
+    onClick: () -> Unit,
     content: @Composable ColumnScope.() -> Unit
 ) {
     val shape = RoundedCornerShape(22.dp)
@@ -388,6 +430,7 @@ private fun TrendCard(
             .clip(shape)
             .background(Color.White)
             .border(1.dp, CardLine, shape)
+            .clickable{ onClick()}
             .padding(18.dp)
     ) {
         Text(

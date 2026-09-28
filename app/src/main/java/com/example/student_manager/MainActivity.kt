@@ -14,9 +14,11 @@ import com.example.student_manager.data.Student
 import com.example.student_manager.ui.student.AddStudentScreen
 import com.example.student_manager.ui.student.AppScaffold
 import com.example.student_manager.ui.student.AttendanceHistoryScreen
+import com.example.student_manager.ui.student.DailyReportScreen
 import com.example.student_manager.ui.student.DashboardScreen
 import com.example.student_manager.ui.student.EditStudentScreen
 import com.example.student_manager.ui.student.LoginScreen
+import com.example.student_manager.ui.student.MonthlyReportScreen
 import com.example.student_manager.ui.student.ReportScreen
 import com.example.student_manager.ui.student.ViewStudentScreen
 import com.example.student_manager.ui.student.StudentDetailsScreen
@@ -61,8 +63,14 @@ class MainActivity : ComponentActivity() {
                         "attendance_history" -> {
                             currentScreen = "attendance"
                         }
-                        "report" -> {
+                        "reports" -> {
                             currentScreen = "dashboard"
+                        }
+                        "monthly_report" -> {
+                            currentScreen = "reports"
+                        }
+                        "daily_report" -> {
+                            currentScreen = "reports"
                         }
                     }
                 }
@@ -188,13 +196,45 @@ class MainActivity : ComponentActivity() {
                         }
                     }
 
-                    "reports" -> {
+                    "reports" -> AppScaffold(
+                        currentScreen = "reports",
+                        onNavigate = { currentScreen = it }
+                    ) {
                         ReportScreen(
-                            viewModel = studentViewModel,
-                            onBackClick = {
-                                currentScreen = "dashboard"
-                            }
+                            onBackClick = { currentScreen = "dashboard" },
+                            onNavigate = {
+                                screen -> currentScreen = screen
+                            },
+                            viewModel = studentViewModel
                         )
+                    }
+
+                    "monthly_report" -> {
+                        AppScaffold(
+                            currentScreen = "reports",
+                            onNavigate = { currentScreen = it }
+                        ) {
+                            MonthlyReportScreen(
+                                viewModel = studentViewModel,
+                                onBackClick = {
+                                    currentScreen = "reports"
+                                }
+                            )
+                        }
+                    }
+
+                    "daily_report" -> {
+                        AppScaffold(
+                            currentScreen = "reports",
+                            onNavigate = { currentScreen = it }
+                        ) {
+                            DailyReportScreen(
+                                viewModel = studentViewModel,
+                                onBackClick = {
+                                    currentScreen = "reports"
+                                }
+                            )
+                        }
                     }
 
                     "student_details" -> {
