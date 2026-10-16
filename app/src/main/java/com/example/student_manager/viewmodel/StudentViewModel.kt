@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.student_manager.data.DailyAttendance
+import com.example.student_manager.data.DefaulterStudent
 import com.example.student_manager.data.MonthlyAttendance
 import com.example.student_manager.data.ReportData
 import com.example.student_manager.data.Student
@@ -28,6 +29,49 @@ class StudentViewModel : ViewModel() {
     private val _dailyAttendance =
         MutableStateFlow<List<DailyAttendance>>(emptyList())
     val dailyAttendance = _dailyAttendance.asStateFlow()
+
+    private val _defaulters =
+        MutableStateFlow<List<DefaulterStudent>>(emptyList())
+
+    val defaulters = _defaulters.asStateFlow()
+
+    private val _defaultersLoading = MutableStateFlow(false)
+    val defaultersLoading = _defaultersLoading.asStateFlow()
+
+    private val _defaultersError = MutableStateFlow<String?>(null)
+    val defaultersError = _defaultersError.asStateFlow()
+
+    fun getDefaulters(threshold: Double = 75.0) {
+        viewModelScope.launch {
+            _defaultersLoading.value = true
+            _defaultersError.value = null
+
+            try {
+                val result = RetrofitInstance.api.getDefaulters(threshold)
+
+                android.util.Log.d("Defaulters", "API response: $result")
+                _defaulters.value = result
+
+                android.util.Log.d(
+                    "Defaulters",
+                    "Students received: ${result.size}"
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+
+                android.util.Log.e(
+                    "Defaulters",
+                    "API error: ${e.message}",
+                    e
+                )
+
+                _defaultersError.value =
+                    "${e.javaClass.simpleName}: ${e.message}"
+            } finally {
+                _defaultersLoading.value = false
+            }
+        }
+    }
 
     fun getStudents() {
         viewModelScope.launch {

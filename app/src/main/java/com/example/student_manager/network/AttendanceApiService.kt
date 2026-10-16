@@ -1,6 +1,7 @@
 package com.example.student_manager.network
 
 import com.example.student_manager.data.Attendance
+import com.example.student_manager.data.DefaulterStudent
 import retrofit2.http.*
 
 interface AttendanceApiService {
@@ -33,4 +34,9 @@ interface AttendanceApiService {
     suspend fun deleteAttendance(
         @Path("id") id: Long
     )
+
+//    @GET("reports/defaulters")
+//    suspend fun getDefaulters(
+//        @Query("threshold") threshold: Double
+//    ): List<DefaulterStudent>
 }

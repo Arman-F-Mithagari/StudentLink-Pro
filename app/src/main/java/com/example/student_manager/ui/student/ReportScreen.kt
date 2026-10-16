@@ -260,7 +260,7 @@ fun ReportScreen(
                     icon = Icons.Default.PersonOff,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Toast.makeText(context, "Coming soon", Toast.LENGTH_SHORT).show()
+                    onNavigate("defaulters")
                 }
                 QuickActionButton(
                     label = "Export Report",
@@ -512,7 +512,8 @@ private fun QuickActionButton(
     label: String,
     icon: ImageVector,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+
 ) {
     Row(
         modifier = modifier

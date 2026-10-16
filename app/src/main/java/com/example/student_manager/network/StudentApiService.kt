@@ -1,6 +1,7 @@
 package com.example.student_manager.network
 
 import com.example.student_manager.data.DailyAttendance
+import com.example.student_manager.data.DefaulterStudent
 import com.example.student_manager.data.MonthlyAttendance
 import com.example.student_manager.data.ReportData
 import com.example.student_manager.data.Student
@@ -10,6 +11,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface StudentApiService {
 
@@ -38,4 +40,9 @@ interface StudentApiService {
     suspend fun deleteStudent(
         @Path("id") id: Long
     ): retrofit2.Response<Unit>
+
+    @GET("reports/defaulters")
+    suspend fun getDefaulters(
+        @Query("threshold") threshold: Double
+    ): List<DefaulterStudent>
 }

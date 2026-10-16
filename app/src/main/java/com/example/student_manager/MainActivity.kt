@@ -16,6 +16,7 @@ import com.example.student_manager.ui.student.AppScaffold
 import com.example.student_manager.ui.student.AttendanceHistoryScreen
 import com.example.student_manager.ui.student.DailyReportScreen
 import com.example.student_manager.ui.student.DashboardScreen
+import com.example.student_manager.ui.student.DefaultersScreen
 import com.example.student_manager.ui.student.EditStudentScreen
 import com.example.student_manager.ui.student.LoginScreen
 import com.example.student_manager.ui.student.MonthlyReportScreen
@@ -70,6 +71,9 @@ class MainActivity : ComponentActivity() {
                             currentScreen = "reports"
                         }
                         "daily_report" -> {
+                            currentScreen = "reports"
+                        }
+                        "defaulter" -> {
                             currentScreen = "reports"
                         }
                     }
@@ -250,6 +254,16 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
+                    }
+
+                    "defaulters" -> AppScaffold(
+                        currentScreen = "reports",
+                        onNavigate = { currentScreen = it }
+                    ) {
+                        DefaultersScreen(
+                            viewModel = studentViewModel,
+                            onBackClick = { currentScreen = "reports" }
+                        )
                     }
 
 
